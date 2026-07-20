@@ -189,7 +189,60 @@ const resetPassword = asyncHandler(async (req, res) => {
   })
 })
 
-const getUsers = asyncHandler(async (req, res) => {})
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select(
+    "-password -refreshToken -passwordChangedAt -role",
+  )
+  if (!users) throw new Error("the user list were empty")
+  return res.status(200).json({
+    isSuccess: true,
+    users,
+  })
+})
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const { _id } = req?.query || {}
+
+  if (!_id) throw new Error("Invalid user id")
+
+  const response = await User.findByIdAndDelete(_id)
+  if (!response) throw new Error("delete user failed")
+
+  return res.status(200).json({
+    isSuccess: true,
+    message: "delete user successful",
+  })
+})
+
+const updateUser = asyncHandler(async (req, res) => {
+  if (Object.keys(req?.body || {}).length === 0 && !req?.body?._id)
+    throw new Error("Missing inputs")
+
+  const user = await User.findByIdAndUpdate(req?.body?._id, req.body, {
+    returnDocument: "after",
+  }).select("-password -role -refreshToken")
+  if (!user) throw new Error("Update user failed")
+
+  return res.status(200).json({
+    isSuccess: true,
+    message: "Update user successful",
+  })
+})
+
+const updateUserByAdmin = asyncHandler(async (req, res) => {
+  if (Object.keys(req?.body || {}).length === 0 && !req?.body?.uid)
+    throw new Error("Missing inputs")
+
+  const user = await User.findByIdAndUpdate(req?.body?.uid, req.body, {
+    returnDocument: "after",
+  }).select("-password -role -refreshToken")
+  if (!user) throw new Error("Update user failed")
+
+  return res.status(200).json({
+    isSuccess: true,
+    message: "Update user successful",
+  })
+})
 
 module.exports = {
   register,
@@ -199,4 +252,8 @@ module.exports = {
   logout,
   forgotPassword,
   resetPassword,
+  getUsers,
+  deleteUser,
+  updateUser,
+  updateUserByAdmin,
 }
