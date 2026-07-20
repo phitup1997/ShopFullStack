@@ -1,0 +1,202 @@
+const jwt = require("jsonwebtoken")
+const User = require("../models/user")
+const bcrypt = require("bcrypt")
+const crypto = require("crypto")
+const asyncHandler = require("express-async-handler")
+const sendMail = require("../Utils/sendMail")
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../middleware/jwt")
+
+const register = asyncHandler(async (req, res) => {
+  const { firstName, lastName, email, password, mobile } = req?.body || {}
+
+  if (!firstName || !lastName || !email || !password || !mobile) {
+    return res.status(400).json({ isSuccess: false, error: "Missing Inputs" })
+  }
+
+  const response = await User.create(req.body)
+
+  return res.status(200).json({ isSuccess: true, response })
+})
+
+const login = asyncHandler(async (req, res) => {
+  if (!req?.body.email || !req?.body.password) {
+    return res.status(400).json({ isSuccess: false, error: "Missing Inputs" })
+  }
+
+  const user = await User.findOne({ email: req?.body.email })
+  if (!user) {
+    throw new Error("Email doesn't existed")
+    return
+  }
+
+  const isMatch = bcrypt.compareSync(req?.body.password, user.password)
+  if (!isMatch) {
+    return res.status(400).json({
+      isSuccess: false,
+      message: "Password incorrect!",
+    })
+  }
+
+  const { password, role, ...userData } = user.toObject()
+  const accessToken = generateAccessToken(user._id, role)
+  const refreshToken = generateRefreshToken(user._id)
+  // Add Refresh Token into user document
+  await User.findByIdAndUpdate(
+    user._id,
+    { refreshToken },
+    { returnDocument: "after" },
+  )
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  })
+
+  return res.status(200).json({
+    isSuccess: true,
+    accessToken: `Bearer ${accessToken}`,
+    refreshToken,
+    userData,
+  })
+})
+
+const getCurrentUser = asyncHandler(async (req, res) => {
+  const { _id } = req.user
+  const user = await User.findById(_id).select("-password -role")
+  return res.status(200).json({
+    isSuccess: true,
+    user,
+  })
+})
+
+const handleRefreshToken = asyncHandler(async (req, res) => {
+  const refreshToken = req?.cookies?.refreshToken
+
+  if (!refreshToken) {
+    return res.status(401).json({
+      isSuccess: false,
+      message: "No refresh token in cookies",
+    })
+  }
+
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_TOKEN_SECRET,
+    )
+  } catch (error) {
+    return res.status(401).json({
+      isSuccess: false,
+      message: error.message || "Invalid refresh token",
+    })
+  }
+
+  const user = await User.findOne({
+    _id: decodedToken?._id,
+    refreshToken,
+  })
+
+  if (!user) {
+    return res.status(400).json({
+      isSuccess: false,
+      message: "Refresh token is not matched",
+    })
+  }
+
+  const newAccessToken = generateAccessToken(user._id, user.role)
+
+  return res
+    .status(200)
+    .json({ isSuccess: true, newAccessToken: `Bearer ${newAccessToken}` })
+})
+
+const logout = asyncHandler(async (req, res) => {
+  const cookie = req.cookies
+
+  if (!cookie?.refreshToken) throw new Error("No refresh token in cookies")
+
+  await User.findOneAndUpdate(
+    { refreshToken: cookie.refreshToken },
+    { refreshToken: "" },
+    { returnDocument: "after" },
+  )
+  res.clearCookie("refreshToken", { httpOnly: true, secure: true })
+  return res.status(200).json({
+    isSuccess: true,
+    message: "Logout success",
+  })
+})
+
+const createPasswordChangedToken = () => {
+  const resetToken = crypto.randomBytes(32).toString("hex")
+  const passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex")
+  const passwordResetExpires = Date.now() + 15 * 60 * 1000
+  return { resetToken, passwordResetToken, passwordResetExpires }
+}
+
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req?.query
+  if (!email) throw new Error("Missing Email")
+
+  const user = await User.findOne({ email })
+  if (!user) throw new Error("User not found")
+
+  const { resetToken, passwordResetToken, passwordResetExpires } =
+    createPasswordChangedToken()
+  await User.findByIdAndUpdate(
+    user._id,
+    { passwordResetToken, passwordResetExpires },
+    { returnDocument: "after" },
+  )
+
+  const html = `<p>Please click on the following link to change your password. This link will be expire after 15 minutes. <a href="${process.env.URL_SERVER}/api/user/reset-password/${resetToken}">Click Here</a></p>`
+
+  const rs = await sendMail(email, html)
+  return res.status(200).json({
+    isSuccess: true,
+    rs,
+  })
+})
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const { password, token } = req?.body || {}
+
+  if (!password || !token) throw new Error("Missing Inputs")
+  const passwordResetToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex")
+  const user = await User.findOne({
+    passwordResetToken,
+    passwordResetExpires: { $gt: Date.now() },
+  })
+  if (!user) throw new Error("The user can not found")
+  user.password = password
+  user.passwordResetToken = undefined
+  user.passwordChangedAt = Date.now()
+  user.passwordResetExpires = undefined
+  await user.save()
+
+  return res.status(200).json({
+    isSuccess: true,
+    message: "Update password successful",
+  })
+})
+
+const getUsers = asyncHandler(async (req, res) => {})
+
+module.exports = {
+  register,
+  login,
+  getCurrentUser,
+  handleRefreshToken,
+  logout,
+  forgotPassword,
+  resetPassword,
+}
