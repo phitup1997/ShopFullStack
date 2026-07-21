@@ -10,7 +10,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
           isSuccess: false,
           message: `Invalid access token ${err}`,
         })
-      console.log(`user : ${JSON.stringify(decode)}`)
+
       req.user = decode
       next()
     })
