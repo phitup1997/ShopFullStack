@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-var userSchema = new mongoose.Schema(
+var productSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -43,9 +43,9 @@ var userSchema = new mongoose.Schema(
       type: String,
       enum: ["black", "grown", "red"],
     },
-    rating: [
+    ratings: [
       {
-        type: Number,
+        star: { type: Number },
         postedBy: { type: mongoose.Types.ObjectId, ref: "User" },
         comment: { type: String },
       },
@@ -58,4 +58,4 @@ var userSchema = new mongoose.Schema(
   { timestamp: true },
 )
 
-module.exports = mongoose.model("Product", userSchema)
+module.exports = mongoose.model("Product", productSchema)
