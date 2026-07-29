@@ -11,6 +11,7 @@ const {
   forgotPasswordSchema,
   resetPasswordSchema,
   updateUserSchema,
+  updateCartSchema,
 } = require('../Utils/schema')
 
 const register = asyncHandler(async (req, res) => {
@@ -114,7 +115,11 @@ const logout = asyncHandler(async (req, res) => {
 
   if (!cookie?.refreshToken) throw new Error('No refresh token in cookies')
 
-  await User.findOneAndUpdate({ refreshToken: cookie.refreshToken }, { refreshToken: '' }, { returnDocument: 'after' })
+  await User.findOneAndUpdate(
+    { refreshToken: cookie.refreshToken },
+    { refreshToken: '' },
+    { returnDocument: 'after' },
+  )
   res.clearCookie('refreshToken', { httpOnly: true, secure: true })
   return res.status(200).json({
     isSuccess: true,
@@ -141,7 +146,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
   if (!user) throw new Error('User not found')
 
   const { resetToken, passwordResetToken, passwordResetExpires } = createPasswordChangedToken()
-  await User.findByIdAndUpdate(user._id, { passwordResetToken, passwordResetExpires }, { returnDocument: 'after' })
+  await User.findByIdAndUpdate(
+    user._id,
+    { passwordResetToken, passwordResetExpires },
+    { returnDocument: 'after' },
+  )
 
   const html = `<p>Please click on the following link to change your password. This link will be expire after 15 minutes. <a href="${process.env.URL_SERVER}/api/user/reset-password/${resetToken}">Click Here</a></p>`
 
@@ -235,6 +244,47 @@ const updateUserByAdmin = asyncHandler(async (req, res) => {
   })
 })
 
+const updateCart = asyncHandler(async (req, res) => {
+  try {
+    const { _id: userId } = req.user
+    const { productId, quantity, color } = req.body || {}
+
+    const { error } = updateCartSchema.validate(req.body)
+    if (error) throw new Error(error.message)
+
+    const user = await User.findById(userId).select('cart')
+    const existingItem = user?.cart?.find(
+      (item) => item.product.toString() === productId && item.color === color,
+    )
+
+    const updateOperation = existingItem
+      ? { $set: { 'cart.$.quantity': quantity } }
+      : { $push: { cart: { product: productId, quantity, color } } }
+
+    const updatedUser = existingItem
+      ? await User.findOneAndUpdate(
+          { _id: userId, 'cart._id': existingItem._id },
+          updateOperation,
+          {
+            returnDocument: 'after',
+          },
+        ).select('cart')
+      : await User.findByIdAndUpdate(userId, updateOperation, { returnDocument: 'after' }).select(
+          'cart',
+        )
+
+    return res.status(200).json({
+      isSuccess: true,
+      cart: updatedUser,
+    })
+  } catch (error) {
+    return res.status(400).json({
+      isSuccess: false,
+      message: error.message,
+    })
+  }
+})
+
 module.exports = {
   register,
   login,
@@ -247,4 +297,5 @@ module.exports = {
   deleteUser,
   updateUser,
   updateUserByAdmin,
+  updateCart,
 }

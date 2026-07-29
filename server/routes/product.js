@@ -1,14 +1,18 @@
-const controller = require("../controllers/product")
-const router = require("express").Router()
-const { verifyToken, isAdmin } = require("../middleware/verifyToken")
+const controller = require('../controllers/product')
+const router = require('express').Router()
+const { verifyToken, isAdmin } = require('../middleware/verifyToken')
+const uploadImage = require('../config/cloudinary')
 
 router.use(verifyToken)
-router.get("/", controller.getProduct)
-router.get("/products", controller.getProducts)
-router.post("/rating", controller.handleRating)
+router.get('/', controller.getProduct)
+router.get('/products', controller.getProducts)
+router.post('/rating', controller.handleRating)
 
-router.post("/create", isAdmin, controller.createNewProduct)
-router.post("/update", isAdmin, controller.updateProduct)
-router.delete("/delete", isAdmin, controller.deleteProduct)
+router.use(isAdmin)
+router.put('/upload-image/:productId', uploadImage.array('images', 5), controller.updateLoadImage)
+
+router.post('/create', controller.createNewProduct)
+router.post('/update', controller.updateProduct)
+router.delete('/delete', controller.deleteProduct)
 
 module.exports = router

@@ -6,7 +6,10 @@ const createNewCoupon = asyncHandler(async (req, res) => {
   const { name, discount, expiry } = req.body || {}
   const { error } = createCouponSchema.validate({ ...req.body })
 
-  const coupon = await Coupon.create({ ...req.body, expiry: Date.now() + expiry * 24 * 60 * 60 * 1000 })
+  const coupon = await Coupon.create({
+    ...req.body,
+    expiry: Date.now() + expiry * 24 * 60 * 60 * 1000,
+  })
 
   return res.status(200).json({
     isSuccess: true,

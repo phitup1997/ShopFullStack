@@ -1,6 +1,7 @@
 const Product = require('../models/product')
 const asyncHandler = require('express-async-handler')
 const slug = require('slugify')
+const cloudinary = require('cloudinary').v2
 const { createProductSchema, ratingchema } = require('../Utils/schema')
 
 const createNewProduct = asyncHandler(async (req, res) => {
@@ -44,7 +45,16 @@ const getProduct = asyncHandler(async (req, res) => {
 })
 
 const getProducts = asyncHandler(async (req, res) => {
-  const { limit: limitParam = 2, page: pageParam = 1, sort, maxPrice, minPrice, title, branch, ...queries } = req.query
+  const {
+    limit: limitParam = 2,
+    page: pageParam = 1,
+    sort,
+    maxPrice,
+    minPrice,
+    title,
+    branch,
+    ...queries
+  } = req.query
 
   const limit = Math.max(Number(limitParam) || 2, 1)
   const page = Math.max(Number(pageParam) || 1, 1)
@@ -165,7 +175,9 @@ const handleRating = asyncHandler(async (req, res) => {
   }
 
   const numericStar = Number(star)
-  const existingIndex = product.ratings.findIndex((r) => r.postedBy.toString() === userId.toString())
+  const existingIndex = product.ratings.findIndex(
+    (r) => r.postedBy.toString() === userId.toString(),
+  )
 
   let updatedRatings = product.ratings.map((r) => r.toObject())
   let dbFilter = { _id: productId }
@@ -202,6 +214,33 @@ const handleRating = asyncHandler(async (req, res) => {
   })
 })
 
+const updateLoadImage = asyncHandler(async (req, res) => {
+  try {
+    if (!req?.files) throw new Error('the image file invalid')
+
+    const product = await Product.findByIdAndUpdate(
+      req.params.productId,
+      { $push: { images: { $each: req.files.map((el) => el.path) } } },
+      { returnDocument: 'after' },
+    )
+
+    return res.status(200).json({
+      isSuccess: true,
+      product,
+    })
+  } catch (error) {
+    if (req.files) {
+      const fileNames = req.files.map((file) => file.filename)
+      cloudinary.api.delete_resources(fileNames)
+    }
+
+    return res.status(400).json({
+      isSuccess: false,
+      message: error.message,
+    })
+  }
+})
+
 module.exports = {
   createNewProduct,
   getProduct,
@@ -209,4 +248,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   handleRating,
+  updateLoadImage,
 }

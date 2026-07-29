@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
-const bcrypt = require("bcrypt")
-const crypto = require("crypto")
+const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 
 var userSchema = new mongoose.Schema(
   {
@@ -28,14 +28,17 @@ var userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: "user",
+      default: 'user',
     },
-    cart: {
-      type: Array,
-      default: [],
-    },
-    address: [{ type: mongoose.Types.ObjectId, ref: "Address" }],
-    wishlist: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
+    cart: [
+      {
+        product: { type: mongoose.Types.ObjectId, ref: 'Product' },
+        quantity: Number,
+        color: String,
+      },
+    ],
+    address: String,
+    wishlist: [{ type: mongoose.Types.ObjectId, ref: 'Product' }],
     isBlocked: {
       type: Boolean,
       default: false,
@@ -56,8 +59,8 @@ var userSchema = new mongoose.Schema(
   { timestamps: true },
 )
 
-userSchema.pre("save", function (next) {
-  if (!this.isModified("password")) {
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password')) {
     return next()
   }
 
@@ -67,13 +70,10 @@ userSchema.pre("save", function (next) {
 
 userSchema.method = {
   createPasswordChangedToken: function () {
-    const resetToken = crypto.randomBytes(32).toString("hex")
-    this.passwordResetToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex")
+    const resetToken = crypto.randomBytes(32).toString('hex')
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
     return resetToken
   },
 }
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model('User', userSchema)
