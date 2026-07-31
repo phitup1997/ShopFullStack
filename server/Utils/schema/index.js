@@ -8,5 +8,6 @@ module.exports = {
   ...authSchema,
   ...userSchema,
   ...blogSchema,
+  ...productSchema,
   ...couponSchema,
 }

@@ -8,9 +8,9 @@ const createProductSchema = joi
     }),
     slug: joi.string().lowercase().optional(),
     description: joi.string().optional().allow(''),
-    branch: joi.string().trim().required().messages({
-      'string.empty': 'Branch cannot be empty',
-      'any.required': 'Branch is required',
+    brand: joi.string().trim().required().messages({
+      'string.empty': 'brand cannot be empty',
+      'any.required': 'brand is required',
     }),
     price: joi.number().min(0).required().messages({
       'number.base': 'Price must be a number',

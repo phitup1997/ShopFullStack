@@ -1,4 +1,4 @@
-const mongoose = require("mongoose") // Erase if already required
+const mongoose = require('mongoose') // Erase if already required
 
 // Declare the Schema of the Mongo model
 var productCategorySchema = new mongoose.Schema(
@@ -9,9 +9,13 @@ var productCategorySchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    brand: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamp: true },
 )
 
 //Export the model
-module.exports = mongoose.model("ProductCategory", productCategorySchema)
+module.exports = mongoose.model('ProductCategory', productCategorySchema)
