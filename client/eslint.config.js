@@ -42,7 +42,9 @@ const eslintConfig = config(
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
-        projectService: true,
+        projectService: {
+          defaultProject: "tsconfig.app.json",
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -53,6 +55,7 @@ const eslintConfig = config(
     },
     rules: {
       "no-undef": [0],
+      "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/consistent-type-definitions": [2, "type"],
       "@typescript-eslint/consistent-type-imports": [
         2,

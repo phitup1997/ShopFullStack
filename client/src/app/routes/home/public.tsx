@@ -1,6 +1,6 @@
-import React from "react"
 import { Outlet } from "react-router-dom"
-import { Header, Navigation } from "../../components"
+import Header from "../../../components/ui/header/header"
+import Navigation from "../../../components/ui/navigation/navigation"
 
 const Public = () => {
   return (

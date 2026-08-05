@@ -1,14 +1,50 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
 @import "tailwindcss";
 
+button.slick-next {
+  right: 80px;
+  z-index: 10;
+}
+
+button.slick-prev {
+  left: 20px;
+  z-index: 10;
+}
+
+button.slick-next::before {
+  color: gray;
+  content: "\276F";
+  background-color: #ffffff;
+  width: 80px;
+  height: 80px;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button.slick-prev::before {
+  color: gray;
+  content: "\276E";
+  background-color: #ffffff;
+  width: 80px;
+  height: 80px;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @theme {
   /* 1. Custom Background Colors */
   /* Creates utilities like `bg-main`, `text-main`, `border-main` */
   --color-main: #ee3131;
   --color-secondary: #505050;
-  --color-brand-primary: #38bdf8;
+  --color-tertiary: #1c1d1d;
+  --color-accent: #151515;
+  --color-main-border: rgba(0, 0, 0, 0.1);
 
-  --font-main: "Poppins", sans-serif;
+  --font-main: "Poppins";
 
   /* 2. Custom Widths & Spacing */
   /* Creates `w-main`, `max-w-main`, `p-main`, `m-main` */

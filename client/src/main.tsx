@@ -1,27 +1,15 @@
-import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { Provider } from "react-redux"
-import { App } from "./App"
+import { App } from "./app"
 import "./index.css"
-import { store } from "./app/store"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 import { BrowserRouter } from "react-router-dom"
 
-const container = document.getElementById("root")
+const root = document.getElementById("root")
+if (!root) throw new Error("No root element found")
 
-if (container) {
-  const root = createRoot(container)
-
-  root.render(
-    <StrictMode>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
-    </StrictMode>,
-  )
-} else {
-  throw new Error(
-    "Root element with ID 'root' was not found in the document. Ensure there is a corresponding HTML element with the ID 'root' in your HTML file.",
-  )
-}
+createRoot(root).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+)
