@@ -33,6 +33,10 @@ var productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    thumb: {
+      type: String,
+      required: true,
+    },
     images: {
       type: Array,
     },
@@ -49,7 +53,7 @@ var productSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamp: true },
+  { timestamps: true },
 )
 
 module.exports = mongoose.model('Product', productSchema)

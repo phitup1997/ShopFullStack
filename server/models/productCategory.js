@@ -13,8 +13,9 @@ var productCategorySchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    icon: String,
   },
-  { timestamp: true },
+  { timestamps: true },
 )
 
 //Export the model

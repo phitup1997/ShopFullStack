@@ -3,9 +3,10 @@ const router = require('express').Router()
 const { verifyToken, isAdmin } = require('../middleware/verifyToken')
 const uploadImage = require('../config/cloudinary')
 
-router.use(verifyToken)
 router.get('/', controller.getProduct)
 router.get('/products', controller.getProducts)
+
+router.use(verifyToken)
 router.post('/rating', controller.handleRating)
 
 router.use(isAdmin)

@@ -4,21 +4,100 @@ const slug = require('slugify')
 const cloudinary = require('cloudinary').v2
 const { createProductSchema, ratingchema } = require('../Utils/schema')
 
+const dummyProducts = asyncHandler(async (req, res) => {
+  const mock_data = {
+    title: 'XIAO MI1',
+    slug: 'xiao-mil',
+    brand: 'XIAOMI',
+    price: 7193888,
+    category: 'Smartphone',
+    quantity: 10,
+    sold: 0,
+    thumb:
+      'https://digital-world-2.myshopify.com/cdn/shop/files/IMG_1890_263275f1-3801-4be5-94d5-1e0e4a44fb85_345x550.png?v=1750768808',
+    images: [
+      'https://digital-world-2.myshopify.com/cdn/shop/files/IMG_1888_e8361dcb-13ea-4157-9e19-2cae75ef13f7_345x550.png?v=1750768857',
+      'https://digital-world-2.myshopify.com/cdn/shop/files/u3_1024x1024.jpg?v=1750768808',
+      'https://digital-world-2.myshopify.com/cdn/shop/files/google-pixel-04_1024x1024.jpg?v=1750768808',
+    ],
+    color: 'blue',
+    totalRatings: 0,
+    ratings: [],
+  }
+
+  const categories = [
+    'Smartphone',
+    'Tablet',
+    'Laptop',
+    'Accessories',
+    'Television',
+    'Printer',
+    'Speaker',
+    'Camera',
+  ]
+
+  const categoryBrands = {
+    Smartphone: ['Apple', 'Samsung', 'Xiaomi', 'Oppo', 'Vivo'],
+    Tablet: ['Apple', 'Samsung', 'Xiaomi', 'Lenovo'],
+    Laptop: ['Apple', 'Dell', 'Asus', 'HP', 'Lenovo', 'Acer', 'MSI'],
+    Accessories: ['Anker', 'Logitech', 'Baseus', 'Belkin', 'UGreen'],
+    Television: ['Samsung', 'LG', 'Sony', 'TCL', 'Xiaomi'],
+    Printer: ['Canon', 'HP', 'Epson', 'Brother'],
+    Speaker: ['JBL', 'Sony', 'Marshall', 'Bose', 'Harman Kardon'],
+    Camera: ['Canon', 'Sony', 'Nikon', 'Fujifilm'],
+  }
+
+  const colors = ['black', 'white', 'space gray', 'silver', 'blue']
+
+  for (let i = 0; i < 100; i++) {
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)]
+
+    const brandList = categoryBrands[randomCategory]
+    const randomBrand = brandList[Math.floor(Math.random() * brandList.length)]
+
+    const minPrice = 1000000
+    const maxPrice = 100000000
+    const rawPrice = Math.floor(Math.random() * (maxPrice - minPrice + 1)) + minPrice
+    const randomPrice = Math.round(rawPrice / 1000) * 1000 // e.g., 12,450,000
+
+    const title = `${randomBrand} ${randomCategory} Pro Series ${i + 1}`
+
+    const product = {
+      title: title,
+      slug: slug(title),
+      brand: randomBrand,
+      price: randomPrice,
+      category: randomCategory,
+      quantity: Math.floor(Math.random() * 100) + 1, // 1 to 100
+      sold: Math.floor(Math.random() * 50), // 0 to 50
+      thumb: mock_data.thumb,
+      images: mock_data.images,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      totalRatings: 0,
+      ratings: [],
+    }
+
+    await Product.create(product)
+  }
+
+  return res.status(200).json({
+    isSuccess: true,
+    message: 'Test Ok',
+  })
+})
+
 const createNewProduct = asyncHandler(async (req, res) => {
   const validation = createProductSchema.validate({ ...req.body })
   if (validation.error) {
     throw new Error(validation.error.message)
   }
-
   if (req.body?.title) req.body.slug = slug(req.body.title)
-
   const product = await Product.create(req.body)
   if (!product)
     return res.status(400).json({
       isSuccess: false,
       message: 'Cannot create new product',
     })
-
   return res.status(200).json({
     isSuccess: true,
     newProduct: product,
@@ -46,7 +125,7 @@ const getProduct = asyncHandler(async (req, res) => {
 
 const getProducts = asyncHandler(async (req, res) => {
   const {
-    limit: limitParam = 2,
+    limit: limitParam = 10,
     page: pageParam = 1,
     sort,
     maxPrice,
@@ -113,53 +192,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
     message: 'Delete product successful',
   })
 })
-
-// const handleRating = asyncHandler(async (req, res) => {
-//   const { _id } = req.user
-//   const { star, comment, productId } = req.body || {}
-
-//   const validation = ratingchema.validate({ ...req.body })
-//   if (validation.error) {
-//     throw new Error(validation.error.message)
-//   }
-
-//   const product = await Product.findById(productId)
-//   const alreadyRating = product.ratings.find((rating) => rating.postedBy.toString() === _id)
-
-//   if (alreadyRating) {
-//     await Product.updateOne(
-//       { 'ratings._id': alreadyRating._id },
-//       {
-//         $set: { 'ratings.$.star': Number(star), 'ratings.$.comment': comment },
-//       },
-//       { returnDocument: 'after' },
-//     )
-//   } else {
-//     await Product.findByIdAndUpdate(
-//       productId,
-//       {
-//         $push: { ratings: { star: Number(star), comment, postedBy: _id } },
-//       },
-//       { returnDocument: 'after' },
-//     )
-//   }
-
-//   const totalRating = product.ratings.length
-//   const totalRatingStar = product.ratings.reduce((total, rating) => (total += +rating.star), 0)
-//   const sumRating = Math.round((totalRatingStar * 10) / totalRating) / 10
-//   product.totalRatings = sumRating
-//   await product.save()
-
-//   const updatedRating = product.ratings.map((rating) => {
-//     if (rating.postedBy.toString() === _id) return { star: Number(star), comment, postedBy: productId, _id: rating._id }
-//     return rating
-//   })
-
-//   return res.status(200).json({
-//     isSuccess: true,
-//     product: { ...product.toObject(), ratings: updatedRating, totalRatings: sumRating },
-//   })
-// })
 
 const handleRating = asyncHandler(async (req, res) => {
   const { _id: userId } = req.user
