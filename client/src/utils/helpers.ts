@@ -1,4 +1,4 @@
-const generateSlug = (val: string) => {
+export const generateSlug = (val: string) => {
   return val
     .toLowerCase()
     .normalize("NFD")
@@ -7,4 +7,12 @@ const generateSlug = (val: string) => {
     .join("-")
 }
 
-export { generateSlug }
+export const formatCurrency = (amount: number, symbol?: string): string => {
+  const formattedAmount = new Intl.NumberFormat("en-US").format(amount)
+
+  if (!symbol) {
+    return formattedAmount
+  }
+
+  return `${formattedAmount} ${symbol}`
+}

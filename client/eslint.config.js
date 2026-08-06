@@ -56,15 +56,9 @@ const eslintConfig = config(
     rules: {
       "no-undef": [0],
       "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/consistent-type-definitions": [2, "type"],
-      "@typescript-eslint/consistent-type-imports": [
-        2,
-        {
-          prefer: "type-imports",
-          fixStyle: "separate-type-imports",
-          disallowTypeAnnotations: true,
-        },
-      ],
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/consistent-type-imports": "off",
+      "@typescript-eslint/no-confusing-void-expression": "off",
       "no-restricted-imports": [
         2,
         {
@@ -76,6 +70,12 @@ const eslintConfig = config(
                 "Please use pre-typed versions from `src/app/hooks.ts` instead.",
             },
           ],
+        },
+      ],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowNumber: true,
         },
       ],
     },

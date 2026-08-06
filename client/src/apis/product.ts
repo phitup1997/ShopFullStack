@@ -1,8 +1,10 @@
 import type { AxiosResponse } from "axios"
-import type { IProductCategory } from "../types/product"
+import type { IProductCategory, IProductPagination } from "../types/product"
 import axios from "./api-client"
 
-export const getProducts = async (params: Record<string, unknown>) =>
+export const getProducts = async (
+  params: Record<string, unknown>,
+): Promise<AxiosResponse<IProductPagination>> =>
   axios({
     url: "product/products",
     method: "GET",
