@@ -73,7 +73,7 @@ const dummyProducts = asyncHandler(async (req, res) => {
       thumb: mock_data.thumb,
       images: mock_data.images,
       color: colors[Math.floor(Math.random() * colors.length)],
-      totalRatings: 0,
+      totalRatings: Math.floor(Math.random() * 5) + 1,
       ratings: [],
     }
 
