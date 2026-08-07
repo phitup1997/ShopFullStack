@@ -17,6 +17,7 @@ interface IPagination {
 }
 
 export interface IProduct {
+  _id: string
   brand: string
   category: string
   color: string
@@ -28,7 +29,7 @@ export interface IProduct {
   sold: number
   thumb: string
   title: string
-  totalRating: number
+  totalRatings: number
   updatedAt: string
   createdAt: string
 }

@@ -4,64 +4,69 @@ import Product from "../product/product"
 import { IProduct } from "../../../types/product"
 import Carousel from "../carousel/carousel"
 
-const tabs = [
-  {
-    id: 1,
-    title: "Best Seller",
-  },
-  {
-    id: 2,
-    title: "New Arrivals",
-  },
-  {
-    id: 3,
-    title: "Tablet",
-  },
+enum TabId {
+  BestSeller = 1,
+  NewArrivals = 2,
+}
+
+const TABS = [
+  { id: TabId.BestSeller, title: "Best Seller" },
+  { id: TabId.NewArrivals, title: "New Arrivals" },
 ]
 
 const BestSeller = () => {
-  const [isActiveTab, setIsActiveTab] = useState<number>(1)
-  const [bestSeller, setBestSeller] = useState<IProduct[]>([])
-  const [newArrivals, setNewArrivals] = useState<IProduct[]>([])
-
-  const fetchProduct = async () => {
-    const [bsData, naData] = await Promise.all([
-      getProducts({ sort: "-sold" }),
-      getProducts({ sort: "-createdAt" }),
-    ])
-
-    setBestSeller(bsData.data.products)
-    setNewArrivals(bsData.data.products)
-    // console.log(`test 2 : ${JSON.stringify(test2)}`)
-  }
+  const [activeTab, setActiveTab] = useState<TabId>(TabId.BestSeller)
+  const [productsMap, setProductsMap] = useState<Record<TabId, IProduct[]>>({
+    [TabId.BestSeller]: [],
+    [TabId.NewArrivals]: [],
+  })
 
   useEffect(() => {
-    void fetchProduct()
+    const fetchProducts = async () => {
+      try {
+        const [bsData, naData] = await Promise.all([
+          getProducts({ sort: "-sold" }),
+          getProducts({ sort: "-createdAt" }),
+        ])
+
+        setProductsMap({
+          [TabId.BestSeller]: bsData.data.products,
+          [TabId.NewArrivals]: naData.data.products,
+        })
+      } catch (error) {
+        console.error("Failed to fetch products:", error)
+      }
+    }
+
+    void fetchProducts()
   }, [])
 
   return (
     <div>
-      <div className="flex pb-[15px] mb-5 font-semibold border-b border-main border-b-2">
-        {tabs.map((tab, idx) => (
-          <span
-            key={tab.id}
-            className={
-              isActiveTab === tab.id
-                ? `text-[20px] font-main uppercase text-accent cursor-pointer pr-5 mr-5 ${tabs.length - 1 > idx ? "border-r border-main-border" : ""}`
-                : `text-[20px] font-main uppercase text-accent cursor-pointer opacity-50 pr-5 mr-5 ${tabs.length - 1 > idx ? "border-r border-main-border" : ""}`
-            }
-            onClick={() => {
-              setIsActiveTab(tab.id)
-            }}
-          >
-            {tab.title}
-          </span>
-        ))}
+      <div className="flex border-b-2 border-main pb-[15px] mb-5 font-semibold font-main">
+        {TABS.map((tab, idx) => {
+          const isActive = activeTab === tab.id
+          const hasBorder = idx < TABS.length - 1
+
+          return (
+            <span
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`
+                cursor-pointer pr-5 mr-5 text-[20px] uppercase text-accent transition-opacity
+                ${isActive ? "opacity-100" : "opacity-50"}
+                ${hasBorder ? "border-r border-main-border" : ""}
+              `}
+            >
+              {tab.title}
+            </span>
+          )
+        })}
       </div>
       <div className="mt-4">
         <Carousel itemsToShow={3} gap={16}>
-          {bestSeller.map(item => (
-            <Product product={item} />
+          {productsMap[activeTab].map(item => (
+            <Product key={item._id} product={item} />
           ))}
         </Carousel>
       </div>
