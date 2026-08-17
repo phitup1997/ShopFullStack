@@ -7,8 +7,17 @@ export const generateSlug = (val: string) => {
     .join("-")
 }
 
-export const formatCurrency = (amount: number, symbol?: string): string => {
-  const formattedAmount = new Intl.NumberFormat("en-US").format(amount)
+export const formatCurrency = (
+  amount: number | string,
+  symbol?: string,
+): string => {
+  const numericAmount = typeof amount === "string" ? parseFloat(amount) : amount
+
+  if (isNaN(numericAmount)) {
+    return `0${symbol ? ` ${symbol}` : ""}`
+  }
+
+  const formattedAmount = new Intl.NumberFormat("en-US").format(numericAmount)
 
   if (!symbol) {
     return formattedAmount

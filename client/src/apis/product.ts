@@ -1,5 +1,9 @@
 import type { AxiosResponse } from "axios"
-import type { IProductCategory, IProductPagination } from "../types/product"
+import type {
+  IProductCategory,
+  IProductDailyDeal,
+  IProductPagination,
+} from "../types/product"
 import axios from "./api-client"
 
 export const getProducts = async (
@@ -14,3 +18,7 @@ export const getProducts = async (
 export const getProductCategories = (): Promise<
   AxiosResponse<IProductCategory>
 > => axios.get<IProductCategory>("/product-category")
+
+export const getProductDailyDeal = (): Promise<
+  AxiosResponse<IProductDailyDeal>
+> => axios.get<IProductDailyDeal>("/product/daily-deal")

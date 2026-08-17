@@ -9,6 +9,10 @@ export type IProductCategory = {
   categories: ICategory[]
 }
 
+export interface IProductDailyDeal {
+  product: IProduct
+}
+
 interface IPagination {
   count: number
   isSuccess: boolean
