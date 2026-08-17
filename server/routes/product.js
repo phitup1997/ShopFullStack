@@ -5,6 +5,7 @@ const uploadImage = require('../config/cloudinary')
 
 router.get('/', controller.getProduct)
 router.get('/products', controller.getProducts)
+router.get('/daily-deal', controller.getDailyDealProduct)
 
 router.use(verifyToken)
 router.post('/rating', controller.handleRating)

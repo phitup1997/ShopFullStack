@@ -273,6 +273,25 @@ const updateLoadImage = asyncHandler(async (req, res) => {
   }
 })
 
+const getDailyDealProduct = asyncHandler(async (req, res) => {
+  try {
+    const product = await Product.aggregate([{ $sample: { size: 1 } }])
+
+    if (!product?.[0])
+      return res.status(400).json({ isSuccess: false, message: 'Can not found daily deal product' })
+
+    return res.status(200).json({
+      isSuccess: true,
+      product: product[0] || null,
+    })
+  } catch (error) {
+    return res.status(400).json({
+      isSuccess: false,
+      message: error.message,
+    })
+  }
+})
+
 module.exports = {
   createNewProduct,
   getProduct,
@@ -281,4 +300,5 @@ module.exports = {
   deleteProduct,
   handleRating,
   updateLoadImage,
+  getDailyDealProduct,
 }
