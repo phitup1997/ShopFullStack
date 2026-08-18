@@ -33,3 +33,11 @@
   /* Or specifically for container/max-width limits: */
   --container-main: 1280px;
 }
+
+/* Remove default "X" clear button on search inputs */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}

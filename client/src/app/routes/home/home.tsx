@@ -7,22 +7,24 @@ import Sidebar from "../../../features/sidebar/Sidebar"
 
 const Home = () => {
   return (
-    <div className="w-main flex flex-col">
-      <div className="flex items-stretch gap-5 mb-[30px]">
-        <Sidebar />
-        <div className="flex-1">
-          <Banner />
+    <div className="flex flex-col w-full justify-center items-center">
+      <div className="w-main flex flex-col">
+        <div className="flex items-stretch gap-5 mb-7.5">
+          <Sidebar />
+          <div className="flex-1">
+            <Banner />
+          </div>
         </div>
-      </div>
-      <div className="w-main flex">
-        <DailyDeal />
-        <div className="w-[75%] pl-[20px]">
-          <BestSeller />
-          <Promotion />
+        <div className="w-main flex">
+          <DailyDeal />
+          <div className="w-[75%] pl-5">
+            <BestSeller />
+            <Promotion />
+          </div>
         </div>
+        <FeatureProducts />
+        <div className="w-full h-[500px]"></div>
       </div>
-      <FeatureProducts />
-      <div className="w-full h-[500px]"></div>
     </div>
   )
 }
