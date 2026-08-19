@@ -43,7 +43,7 @@ const BestSeller = () => {
 
   return (
     <div>
-      <div className="flex border-b-2 border-main pb-[15px] mb-5 font-semibold font-main">
+      <div className="flex border-b-2 border-main pb-3.75 mb-5 font-semibold font-main">
         {TABS.map((tab, idx) => {
           const isActive = activeTab === tab.id
           const hasBorder = idx < TABS.length - 1
@@ -64,7 +64,7 @@ const BestSeller = () => {
         })}
       </div>
       <div className="mt-4">
-        <Carousel itemsToShow={3} gap={16}>
+        <Carousel itemsToShow={{ base: 2, md: 2, lg: 3 }} gap={16}>
           {productsMap[activeTab].map(item => (
             <Product key={item._id} product={item} />
           ))}

@@ -127,20 +127,22 @@ const Product = ({ product }: ProductProps) => {
   const { thumb, title, price, totalRatings } = product
 
   return (
-    <div className="group/product p-[15px] flex flex-1 flex-col min-w-0 border border-main-border w-full overflow-hidden">
+    <div className="relative group/product p-3.75 pb-22 flex flex-1 flex-col min-w-0 border border-main-border w-full overflow-hidden">
       <div className="relative w-full">
         <ProductActionsRow />
         <img src={thumb} className="w-full object-contain" alt={title} />
         <NewBadge />
       </div>
 
-      <span className="text-[16px] font-main text-quaternary block w-full min-w-0 truncate mt-5">
-        {title}
-      </span>
-      {renderStars(totalRatings)}
-      <span className="text-[16px] font-main text-neutral mt-1">
-        {formatCurrency(price, "VND")}
-      </span>
+      <div className="absolute bottom-2 z-10 left-3.75 right-3.75">
+        <span className="text-[16px] font-main text-quaternary block w-full min-w-0 truncate mt-5">
+          {title}
+        </span>
+        {renderStars(totalRatings)}
+        <span className="text-[16px] font-main text-neutral mt-1">
+          {formatCurrency(price, "VND")}
+        </span>
+      </div>
     </div>
   )
 }

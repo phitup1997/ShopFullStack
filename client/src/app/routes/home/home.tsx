@@ -7,7 +7,7 @@ import Sidebar from "../../../features/sidebar/Sidebar"
 
 const Home = () => {
   return (
-    <div className="flex flex-col w-full justify-center items-center">
+    <div className="flex w-full justify-center items-center">
       <div className="w-main flex flex-col">
         <div className="flex items-stretch gap-5 mb-7.5">
           <Sidebar />
@@ -15,9 +15,9 @@ const Home = () => {
             <Banner />
           </div>
         </div>
-        <div className="w-main flex">
+        <div className="w-full flex">
           <DailyDeal />
-          <div className="w-[75%] pl-5">
+          <div className="pl-5 w-[75%]">
             <BestSeller />
             <Promotion />
           </div>

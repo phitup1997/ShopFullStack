@@ -21,14 +21,14 @@ const Sidebar = () => {
         Array.from({ length: 3 }).map((_, index) => (
           <div
             key={index}
-            className="px-5 py-[10px] text-sm text-tertiary animate-pulse"
+            className="px-5 py-2.5 text-sm text-tertiary animate-pulse"
           >
             Loading...
           </div>
         ))
       ) : (
         <div className="flex flex-col">
-          <div className="flex items-center gap-2 py-[15px] px-5 bg-main">
+          <div className="flex items-center gap-2 py-3.75 px-5 bg-main">
             <FaList color="white" size={17} />
             <span className="text-white text-[16px] font-main">
               ALL COLLECTIONS
@@ -44,10 +44,10 @@ const Sidebar = () => {
                   : "text-sm text-tertiary hover:text-main"
               }
             >
-              <div className="flex items-center gap-2 py-[15px] px-5">
+              <div className="flex items-center gap-2 py-3.75 px-5">
                 <img
                   src={category.icon}
-                  className="w-[25px] h-[25px] object-contain"
+                  className="w-6.25 h-6.25 object-contain"
                 />
                 <span>{`${category.title} (${category.brand.length.toString()})`}</span>
               </div>

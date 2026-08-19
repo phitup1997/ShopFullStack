@@ -14,7 +14,7 @@ const FeatureProducts = () => {
   }, [fetchFeatureProducts])
 
   return (
-    <div className="w-main flex flex-col">
+    <div className="flex flex-col">
       <div className="w-full mb-5 py-3.75 border-b-2 border-main">
         <span className="text-[20px] font-semibold text-accent font-main">
           FEATURED PRODUCTS

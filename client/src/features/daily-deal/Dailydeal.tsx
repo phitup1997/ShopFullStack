@@ -3,11 +3,11 @@ import { FaStar } from "react-icons/fa"
 import { FaBars } from "react-icons/fa6"
 import { formatCurrency } from "../../utils/helpers"
 import CountDown from "../../components/ui/count-down/count-down"
-import { useDailyDealStore } from "./DailyDealStore"
+import { useDailyDealStore } from "./dailyDealStore"
 import moment from "moment"
 
 // Change these to control the countdown's starting point
-const DEAL_END_DATE = "2026-08-14T01:13:33.970Z"
+const DEAL_END_DATE = "2026-08-20T01:13:33.970Z"
 
 type TimeLeft = {
   hours: number
@@ -45,7 +45,7 @@ const DealCountdown = ({ endDate }: { endDate: string }) => {
   }, [endDate])
 
   return (
-    <div className="flex mt-3 gap-5">
+    <div className="flex w-full mt-3 gap-2">
       <CountDown time={String(timeLeft.hours)} unit="Hours" />
       <CountDown time={String(timeLeft.minutes)} unit="Minutes" />
       <CountDown time={String(timeLeft.seconds)} unit="seconds" />
