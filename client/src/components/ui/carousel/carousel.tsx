@@ -28,8 +28,9 @@ const resolveItemsToShow = (
   ;(Object.keys(BREAKPOINTS) as Breakpoint[])
     .sort((a, b) => BREAKPOINTS[a] - BREAKPOINTS[b])
     .forEach(bp => {
-      if (width >= BREAKPOINTS[bp] && config[bp] !== undefined) {
-        value = config[bp]!
+      const itemsAtBreakpoint = config[bp]
+      if (width >= BREAKPOINTS[bp] && itemsAtBreakpoint !== undefined) {
+        value = itemsAtBreakpoint
       }
     })
 
