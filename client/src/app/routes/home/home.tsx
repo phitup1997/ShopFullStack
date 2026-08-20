@@ -3,6 +3,7 @@ import Promotion from "../../../components/ui/promotion/promotion"
 import BestSeller from "../../../features/best-seller/bestSeller"
 import DailyDeal from "../../../features/daily-deal/Dailydeal"
 import FeatureProducts from "../../../features/feature-products/FeatureProducts"
+import NewArrivals from "../../../features/new-arrivals/NewArrivals"
 import Sidebar from "../../../features/sidebar/Sidebar"
 
 const Home = () => {
@@ -23,6 +24,7 @@ const Home = () => {
           </div>
         </div>
         <FeatureProducts />
+        <NewArrivals />
         <div className="w-full h-[500px]"></div>
       </div>
     </div>

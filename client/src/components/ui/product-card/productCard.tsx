@@ -26,10 +26,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <img
         src={thumb}
         alt={title}
-        className="w-22.5 h-22.5 object-cover shrink-0"
+        className="w-22.5 h-22.5 object-cover shrink-0 cursor-pointer"
       />
       <div className="flex flex-col min-w-0">
-        <span className="text-[16px] font-main text-quaternary truncate">
+        <span className="text-[16px] font-main text-quaternary truncate cursor-pointer hover:text-main">
           {title}
         </span>
         <div className="flex flex-col justify-center mt-1 flex-wrap">
