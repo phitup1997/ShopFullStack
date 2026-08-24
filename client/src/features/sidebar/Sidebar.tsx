@@ -1,8 +1,8 @@
 import { useEffect } from "react"
-import { generateSlug } from "../../utils/helpers"
+import { generateSlug } from "@utils/helpers"
 import { NavLink } from "react-router-dom"
 import { useSidebarStore } from "./sidebarStore"
-import icons from "../../utils/icons"
+import icons from "@utils/icons"
 
 const { FaList } = icons
 

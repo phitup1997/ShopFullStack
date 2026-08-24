@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { FaStar } from "react-icons/fa"
 import { FaBars } from "react-icons/fa6"
-import { formatCurrency } from "../../utils/helpers"
-import CountDown from "../../components/ui/count-down/count-down"
+import { formatCurrency } from "@utils/helpers"
+import CountDown from "@components/ui/count-down/count-down"
 import { useDailyDealStore } from "./dailyDealStore"
 import moment from "moment"
 

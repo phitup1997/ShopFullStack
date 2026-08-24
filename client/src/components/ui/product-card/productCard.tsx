@@ -1,6 +1,6 @@
 import { MdOutlineStarPurple500 } from "react-icons/md"
-import { IProduct } from "../../../types/product"
-import { formatCurrency } from "../../../utils/helpers"
+import { IProduct } from "@/types/product"
+import { formatCurrency } from "@utils/helpers"
 
 type ProductCardProps = {
   product: IProduct

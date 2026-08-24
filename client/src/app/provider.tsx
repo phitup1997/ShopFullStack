@@ -1,5 +1,5 @@
 import { ErrorBoundary } from "react-error-boundary"
-import { MainErrorFallback } from "../components/errors/main"
+import { MainErrorFallback } from "@components/errors/main"
 
 type AppProviderProps = {
   children: React.ReactNode

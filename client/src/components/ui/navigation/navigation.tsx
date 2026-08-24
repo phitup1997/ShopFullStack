@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { paths } from "../../../config/paths"
+import { paths } from "@config/paths"
 import { GiHamburgerMenu } from "react-icons/gi"
 
 const navigation = [

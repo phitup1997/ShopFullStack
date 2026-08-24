@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { IProduct } from "../../types/product"
-import { getProducts } from "../../apis/product"
-import Carousel from "../../components/ui/carousel/carousel"
-import Product from "../../components/ui/product/product"
+import { IProduct } from "@/types/product"
+import { getProducts } from "@apis/product"
+import Carousel from "@components/ui/carousel/carousel"
+import Product from "@components/ui/product/product"
 
 enum TabId {
   BestSeller = 1,

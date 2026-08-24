@@ -1,6 +1,6 @@
 import { create } from "zustand"
-import { IProduct } from "../../types/product"
-import { getProducts } from "../../apis/product"
+import { IProduct } from "@/types/product"
+import { getProducts } from "@apis/product"
 import { AxiosError } from "axios"
 
 type ApiErrorResponse = {

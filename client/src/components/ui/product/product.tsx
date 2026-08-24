@@ -1,9 +1,9 @@
 import type { ComponentType } from "react"
-import type { IProduct } from "../../../types/product"
-import { formatCurrency } from "../../../utils/helpers"
+import { formatCurrency } from "@utils/helpers"
 import { MdOutlineStarOutline, MdOutlineStarPurple500 } from "react-icons/md"
 import { FaRegEye, FaEye, FaBars, FaRegHeart, FaHeart } from "react-icons/fa6"
 import { HiMiniBars3 } from "react-icons/hi2"
+import { IProduct } from "@/types/product"
 
 type ProductProps = {
   product: IProduct
@@ -96,8 +96,8 @@ const ProductActionsRow = () => (
 )
 
 const NewBadge = () => (
-  <div className="absolute flex top-0 right-0 bg-[#fbb000] text-white text-[13px] font-bold pl-10 pr-4 py-1.5 flex items-center gap-2.5 [clip-path:polygon(10px_0%,_100%_0%,_100%_100%,_10px_100%,_0%_50%)]">
-    <span className="w-[6px] h-[6px] bg-white rounded-full absolute left-[10px] top-1/2 -translate-y-1/2" />
+  <div className="absolute flex top-0 right-0 bg-[#fbb000] text-white text-[13px] font-bold pl-10 pr-4 py-1.5 items-center gap-2.5 [clip-path:polygon(10px_0%,100%_0%,100%_100%,10px_100%,0%_50%)]">
+    <span className="w-1.5 h-1.5 bg-white rounded-full absolute left-2.5 top-1/2 -translate-y-1/2" />
     <span className="uppercase text-[10px] font-main">NEW</span>
   </div>
 )

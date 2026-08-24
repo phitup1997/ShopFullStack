@@ -1,7 +1,7 @@
 import { create } from "zustand"
 import { AxiosError } from "axios"
-import { getProductDailyDeal } from "../../apis/product"
-import type { IProduct } from "../../types/product"
+import { getProductDailyDeal } from "@apis/product"
+import type { IProduct } from "@/types/product"
 
 type ApiErrorResponse = {
   message?: string

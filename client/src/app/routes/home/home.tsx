@@ -1,10 +1,10 @@
-import Banner from "../../../components/ui/banner/banner"
-import Promotion from "../../../components/ui/promotion/promotion"
-import BestSeller from "../../../features/best-seller/bestSeller"
-import DailyDeal from "../../../features/daily-deal/Dailydeal"
-import FeatureProducts from "../../../features/feature-products/FeatureProducts"
-import NewArrivals from "../../../features/new-arrivals/NewArrivals"
-import Sidebar from "../../../features/sidebar/Sidebar"
+import Banner from "@components/ui/banner/banner"
+import Promotion from "@components/ui/promotion/promotion"
+import BestSeller from "@features/best-seller/bestSeller"
+import DailyDeal from "@features/daily-deal/Dailydeal"
+import FeatureProducts from "@features/feature-products/FeatureProducts"
+import NewArrivals from "@features/new-arrivals/NewArrivals"
+import Sidebar from "@features/sidebar/Sidebar"
 
 const Home = () => {
   return (

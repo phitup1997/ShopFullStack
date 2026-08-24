@@ -38,6 +38,6 @@ export interface IProduct {
   createdAt: string
 }
 
-export interface IProductPagination extends IPagination {
+export interface IProducts extends IPagination {
   products: IProduct[]
 }

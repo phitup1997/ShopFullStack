@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
-import Header from "../../../components/ui/header/header"
-import Navigation from "../../../components/ui/navigation/navigation"
-import TopHeader from "../../../components/ui/header/top-header"
+import Header from "@components/ui/header/header"
+import Navigation from "@components/ui/navigation/navigation"
+import TopHeader from "@components/ui/header/top-header"
 
 const Public = () => {
   return (

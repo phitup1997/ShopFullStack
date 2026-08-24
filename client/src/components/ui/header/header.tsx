@@ -1,8 +1,8 @@
 import type { FC } from "react"
-import logo from "../../../assets/logo.png"
-import icons from "../../../utils/icons"
+import logo from "@assets/logo.png"
+import icons from "@utils/icons"
 import { Link } from "react-router-dom"
-import { paths } from "../../../config/paths"
+import { paths } from "@config/paths"
 import { CiHeart } from "react-icons/ci"
 
 const Header: FC = () => {

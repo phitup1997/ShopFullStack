@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 import { useFeatureProductStore } from "./featureProductStore"
-import ProductCard from "../../components/ui/product-card/productCard"
-import DiagonalRevealImage from "../../components/ui/diagonal-reveal-image/DiagonalRevealImage"
-import gallery1 from "../../assets/gallary-1.png"
-import gallery2 from "../../assets/gallary-2.png"
-import gallery3 from "../../assets/gallary-3.png"
-import gallery4 from "../../assets/gallary-4.png"
+import ProductCard from "@components/ui/product-card/productCard"
+import DiagonalRevealImage from "@components/ui/diagonal-reveal-image/DiagonalRevealImage"
+import gallery1 from "@assets/gallary-1.png"
+import gallery2 from "@assets/gallary-2.png"
+import gallery3 from "@assets/gallary-3.png"
+import gallery4 from "@assets/gallary-4.png"
 
 type GalleryBanner = {
   key: string
