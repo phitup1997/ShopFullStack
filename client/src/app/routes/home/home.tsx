@@ -8,7 +8,7 @@ import Sidebar from "@features/sidebar/Sidebar"
 
 const Home = () => {
   return (
-    <div className="flex w-full justify-center items-center">
+    <div className="flex w-full justify-center items-center px-3">
       <div className="w-main flex flex-col">
         <div className="flex items-stretch gap-5 mb-7.5">
           <Sidebar />
