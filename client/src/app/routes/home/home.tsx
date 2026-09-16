@@ -1,3 +1,4 @@
+import HotCollections from "@/features/hot-collections/HotCollections"
 import Banner from "@components/ui/banner/banner"
 import Promotion from "@components/ui/promotion/promotion"
 import BestSeller from "@features/best-seller/bestSeller"
@@ -25,6 +26,7 @@ const Home = () => {
         </div>
         <FeatureProducts />
         <NewArrivals />
+        <HotCollections />
         <div className="w-full h-[500px]"></div>
       </div>
     </div>

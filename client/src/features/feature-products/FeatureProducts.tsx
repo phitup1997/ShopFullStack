@@ -1,11 +1,12 @@
 import { useEffect } from "react"
 import { useFeatureProductStore } from "./featureProductStore"
 import ProductCard from "@components/ui/product-card/productCard"
-import DiagonalRevealImage from "@components/ui/diagonal-reveal-image/DiagonalRevealImage"
 import gallery1 from "@assets/gallary-1.png"
 import gallery2 from "@assets/gallary-2.png"
 import gallery3 from "@assets/gallary-3.png"
 import gallery4 from "@assets/gallary-4.png"
+import Section from "@/components/ui/section/section"
+import DiagonalRevealImage from "@/components/ui/diagonal-reveal-image/DiagonalRevealImage"
 
 type GalleryBanner = {
   key: string
@@ -48,12 +49,7 @@ const FeatureProducts = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="w-full mb-5 py-3.75 border-b-2 border-main">
-        <span className="text-[20px] font-semibold text-accent font-main">
-          FEATURED PRODUCTS
-        </span>
-      </div>
-
+      <Section name="Featured Products" />
       {isLoading ? (
         <p className="spinner">Loading featured products...</p>
       ) : (
